@@ -101,3 +101,54 @@ print(stocks_data)
 # -> profit_per_product
 
 # SELECT name, SUM((products.selling_price - products.buying_price) * sales.quantity) AS profit_per_product FROM sales JOIN products ON sales.pid = products.id GROUP BY name;
+def sales_per_day():
+    cur.execute("""
+      select date(sales.created_at) as date, sum(sales.quantity * products.selling_price) as
+      total_sales from sales join products on products.id = sales.pid  group by date;
+    """)
+    daily_sales = cur.fetchall()
+    return daily_sales
+
+
+def profit_per_day():
+    cur.execute("""
+        select date(sales.created_at) as date, sum(sales.quantity *( products.selling_price -
+        products.buying_price)) as total_sales from sales join products on products.id = sales.pid
+         group by date;
+    
+    """)
+    daily_profit = cur.fetchall()
+    return daily_profit
+
+def sales_per_product():
+    cur.execute("""
+        select products_name as p_name, sum(sales.quantity * products.selling_price) as total_sales from products join sales on products.id = sales.pid
+         group by p_name;
+    
+    """)
+    daily_profit = cur.fetchall()
+    return daily_profit
+
+def profit_per_product():
+    cur.execute("""
+        select products_name as p_name, sum(sales.quantity * (products.selling_price-products.buying_price)) as total_sales from sales join products on products.id = sales.pid
+         group by p_name;
+    
+    """)
+    daily_profit = cur.fetchall()
+    return daily_profit
+
+# class Horse:
+# identity:Horse
+# state:black,british
+# behaviour:runs,walks,eats,sleeps
+
+# class Car:
+# identity:Car
+# state:color-grey,type-toyota-hilux
+# behaviour:transports
+
+# class Student:
+# identity:Student
+# state:bright,obedient
+# behaviour:runs,walks,eats,sleeps
