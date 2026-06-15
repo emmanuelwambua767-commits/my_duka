@@ -1,5 +1,8 @@
+from datetime import datetime
+today=datetime.today()
+print(today)
 class Bank_Account:
-    def __init__(self,account_number,balance,owner_name,date_opened):
+    def __init__(self,account_number,balance,owner_name,date_opened=today):
         self.account_number=account_number
         self.balance=balance
         self.owner_name=owner_name
@@ -7,7 +10,8 @@ class Bank_Account:
 
     def deposit(self):
            self.initial_amount=int(input("Enter amount to be deposited:"))
-           return self.initial_amount
+           new_balance=self.initial_amount+self.balance
+           print(f"Your current amount is:{new_balance}")
 
     def withdraw(self):
           self.final_amount=int(input("Enter amount to be withdrawn:"))
@@ -27,7 +31,7 @@ class Bank_Account:
         print("client details")
         print(f"Name:{self.owner_name} -Account Number:{self.account_number} -Balance:{self.balance} -Date Opened:{self.date_opened}")
         print("-------------------")
-client=Bank_Account("09745453434",100,"Emmanuel Muteti","1-1-2026")
+client=Bank_Account("09745453434",100,"Emmanuel Muteti")
 print(type(client))
 print(client)
 client.get_details()

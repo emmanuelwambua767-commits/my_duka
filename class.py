@@ -50,7 +50,8 @@ class Bank_Account:
 
     def deposit(self):
            self.initial_amount=int(input("Enter amount to be deposited:"))
-           return self.initial_amount
+           new_balance=self.initial_amount+self.balance
+           print(f"Your current amount balance is:{new_balance}")
 
     def withdraw(self):
           self.final_amount=int(input("Enter amount to be withdrawn:"))

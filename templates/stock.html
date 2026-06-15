@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %} Stock {% endblock %}
+{% block content %}
+<div>
+    <p>This is the stock page</p>
+    <div>
+        <form action="/add_stock" method="post">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Stock ID</label>
+                <input type="number" name="stock_id" class="form-control" id="exampleInputEmail1"
+                    aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Products ID</label>
+                <input type="number" name="products_id" class="form-control" id="exampleInputPassword1">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Stock Quantity</label>
+                <input type="number" name="quantity" class="form-control" id="exampleInputEmail1"
+                    aria-describedby="emailHelp">
+            </div>
+            <button type="submit" class="btn btn-primary">Add stock</button>
+        </form>
+    </div>
+    <table id="example" class="table table-striped">
+        <thead>
+            <tr>
+                <th>Stock ID</th>
+                <th>Products ID</th>
+                <th>Stock Quantity</th>
+                <th>Created_at</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in stock_data %}
+            <tr>
+                <td>{{ i[0] }}</td>
+                <td>{{ i[1] }}</td>
+                <td>{{ i[2] }}</td>
+                <td>{{ i[3] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

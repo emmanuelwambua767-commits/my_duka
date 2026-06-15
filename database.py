@@ -10,7 +10,6 @@ def get_products():
 
 # cur.execute("insert into products(name,buying_price,selling_price)values('wallet',300,500)")
 # conn.commit()
-# print(products_data)
 
 def get_sales():
     cur.execute('select * from sales')
@@ -23,8 +22,8 @@ def insert_products2(values):
 
 product1=('tissue',35,50)
 product2=('valon',120,150)
-# insert_products2(product1)
-# insert_products2(product2)
+insert_products2(product1)
+insert_products2(product2)
 products_data=insert_products2
 print(products_data)
 
@@ -33,7 +32,7 @@ def insert_products2(values):
     conn.commit()
 
 product3=('charger',200,350)
-# insert_products2(product3)
+insert_products2(product3)
 products_data=insert_products2
 print(products_data)
 # Q1
@@ -48,12 +47,12 @@ print(stocks_data)
 #insert sales() 
 
 def insert_sales(values):
-    cur.execute("insert into sales(pid,quantity)values(%s,%s)",values)
+    cur.execute("insert into sales(id,pid,quantity)values(%s,%s,%s)",values)
     conn.commit()
 
-sales1=(4,8)
-sales2=(3,12)
-sales3=(5,20)
+# sales1=(200,8,7)
+# sales2=(300,12,9)
+# sales3=(500,20,4)
 
 
 # insert_sales(sales1)
@@ -61,8 +60,8 @@ sales3=(5,20)
 # insert_sales(sales3)
 
 
-sales_data=get_sales()
-print(sales_data)
+# sales_data=get_sales()
+# print(sales_data)
 
 # -> insert_stock()
 def insert_stock(values):
@@ -77,8 +76,8 @@ stock3=(7,35)
 # insert_stock(stock2)
 # insert_stock(stock3)
 
-stocks_data = get_stocks()
-print(stocks_data)
+stock_data = get_stocks()
+print(stock_data)
 
 
 
