@@ -1,5 +1,5 @@
 from flask import Flask,render_template,request,redirect,url_for
-from database import get_products,get_sales,get_stocks,insert_products2,insert_sales,insert_stock
+from database import get_products,get_sales,get_stocks,check_available_stock,insert_products2,insert_sales,insert_stock
 app=Flask(__name__)
 
 @app.route('/')
@@ -10,16 +10,19 @@ def home():
 @app.route('/sales')
 def sales():
     sales_data=get_sales()
-    return render_template('sales.html',sales_data=sales_data) 
+    products=get_products()
+    return render_template('sales.html',sales_data=sales_data,products=products) 
 
 @app.route('/add_sales',methods=['GET','POST'])
 def add_sales():
     if request.method =='POST':
-     sales_ID=request.form['sales_id']
      products_ID=request.form['products_id']
      Quantity=request.form['quantity']
 
-    new_sales=(sales_ID,products_ID,Quantity)
+    new_sales=(products_ID,Quantity)
+    available_stock=check_available_stock()
+    if available_stock<Quantity:
+       print("Insufficient stock,add more")
     insert_sales(new_sales)
     print('sales added successfully')
     return redirect(url_for('sales'))
@@ -45,16 +48,16 @@ def add_products():
 @app.route('/stock')
 def stock():
     stock_data =get_stocks()
-    return render_template('stock.html',stock_data=stock_data)
+    products=get_products()
+    return render_template('stock.html',stock_data=stock_data,products=products)
 
 @app.route('/add_stock',methods=['GET','POST'])
 def add_stock():
     if request.method =='POST':
-     stock_id=request.form['stock_id']
      products_id=request.form['products_id']
      quantity=request.form['quantity']
 
-    new_stock=(stock_id,products_id,quantity)
+    new_stock=(products_id,quantity)
     insert_stock(new_stock)
     print('stock added successfully')
     return redirect(url_for('stock'))
@@ -75,4 +78,4 @@ def dashboard():
 
 
 
-app.run()
+app.run(debug=True)

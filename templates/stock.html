@@ -2,17 +2,17 @@
 {% block title %} Stock {% endblock %}
 {% block content %}
 <div>
+    <br>
     <p>This is the stock page</p>
     <div>
         <form action="/add_stock" method="post">
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Stock ID</label>
-                <input type="number" name="stock_id" class="form-control" id="exampleInputEmail1"
-                    aria-describedby="emailHelp">
-            </div>
-            <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Products ID</label>
-                <input type="number" name="products_id" class="form-control" id="exampleInputPassword1">
+            <div>
+                <select class="form-select" aria-label="Default select example" name="pid">
+                    <option selected>Select a Product</option>
+                    {% for product in products %}
+                    <option value="{{ product[0] }}">{{ product[1] }}</option>
+                    {% endfor %}
+                </select>
             </div>
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Stock Quantity</label>

@@ -47,11 +47,11 @@ print(stocks_data)
 #insert sales() 
 
 def insert_sales(values):
-    cur.execute("insert into sales(id,pid,quantity)values(%s,%s,%s)",values)
+    cur.execute("insert into sales(pid,quantity)values(%s,%s)",values)
     conn.commit()
 
-# sales1=(200,8,7)
-# sales2=(300,12,9)
+# sales1=(2,8,7)
+# sales2=(3,12,9)
 # sales3=(500,20,4)
 
 
@@ -136,6 +136,15 @@ def profit_per_product():
     """)
     daily_profit = cur.fetchall()
     return daily_profit
+
+def check_available_stock(pid):
+    cur.execute("select sum(stock.stockquantity) from stock where pid=%s",(pid,))
+    total_stock=cur.fetchone()[0] or 0
+
+    cur.execute("select sum(sales.quantity) from sales where pid=%s",(pid,))
+    total_sold=cur.fetchone()[0] or 0
+
+    return total_stock-total_sold
 
 # class Horse:
 # identity:Horse
