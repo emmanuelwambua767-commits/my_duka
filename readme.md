@@ -1,0 +1,195 @@
+Create a new project called MyDuka with the following files: -main.py -database.py
+
+Open up a new terminal and run the following commands:
+
+pip install flask
+pip install psycopg2-binary
+TABLES -> Products , Sales , Stock, Users Open sql shell create a new database create database myduka; connect to myduka d. atabase \c myduka
+
+run the following commands
+
+products table CREATE TABLE products ( id SERIAL PRIMARY KEY, name VARCHAR(100) NOT NULL, buying_price NUMERIC(20, 2) NOT NULL CHECK (buying_price >= 0), selling_price NUMERIC(20, 2) NOT NULL CHECK (selling_price >= 0) );
+
+stock table CREATE TABLE stock ( id SERIAL PRIMARY KEY, pid INTEGER NOT NULL REFERENCES products(id) ON DELETE CASCADE, stock_quantity INTEGER NOT NULL CHECK (stock_quantity >= 0), created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP );
+
+sales table CREATE TABLE sales ( id SERIAL PRIMARY KEY, pid INTEGER NOT NULL REFERENCES products(id) ON DELETE CASCADE, quantity INTEGER NOT NULL CHECK (quantity > 0), created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP );
+
+users CREATE TABLE users ( id SERIAL PRIMARY KEY, full_name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL UNIQUE, phone_number VARCHAR(100) NOT NULL, password VARCHAR(255) NOT NULL );
+
+pip -> pip installs packages
+
+Psycopg2 -> A database driver or adapter used to connect Python to a Postgres database -> To estabish this connection , we use a function called psycopg2.connect() -> which takes some parameters important for establishing a db connection
+
+psycopg2.connect() - a function used to establish a new connection to a postgres db -> It takes some arguments: 1.host - on what server is my database located? - host = 'localhost' localhost : my own device -> database is locally hosted on my device
+
+2.port -> where in my device is the Postgres service running -> Postgres runs on port 5432 by default port = '5432' 3.user - username attached to a Postgres user user = 'postgres' 4.password - password attached to a Postgres user for login password = '1234' 5.dbname - the database you intend to connect to dbname = 'myduka'
+
+127.0.0.1 build an app -> deploy it on cloud to make it available online -> an ip address is assigned to your application
+
+179.181.200.120 domain name -> a human friendly name attached to an ip address https://meet.google.com/dsh-idtb-oqb
+
+cur - an object / tool for performing database operations db operations - select , insert , update , delete
+
+C - create - insert R - read. - select U - update. - update D - delete - delete
+
+cur.execute() - a function used to execute sql queries cur.fetchall() - a function used to retrieve data from Postgres to Python
+
+insert into products(name, buying_price,selling_price)values('bread',50,60); insert into products(name, buying_price,selling_price)values('milk',50,60);
+
+our data format - a list of tuples
+
+Task
+
+insert two record of sales in sql shell and use psycopg2 to display them in your terminal
+
+brush up on the following concepts: -> SQL ( sql queries , joins , aggregate functions , group by) -> Python ( data types, lists and tuples , for loops, if statements & functions) w3schools & geeks for geeks
+
+Inserting data using psycopg2 insert into table_name(columns....)values(...) conn.commit() - a function meant to commit / save db changes
+
+Optimize our queries in psycopg2 using functions -> Functions : block of reusable code meant to perform a specifc task
+
+why use functions? 1.Reusability - use parameters parameters & arguments 2.Modularity - breaking code into smaller manageable pieces 3.Better readability 4.Code Organization 5.Scalability 6.Better debugging
+
+transactions - more than one query executing as a single unit of work
+
+sql injection select email,password from users where password = 1 OR 1 == 1 1 OR 1 == 1
+
+Task 1.Using functions write code to: -> get_stock() -> insert sales() -> insert_stock()
+
+2.Write sql queries that fetch the following data: -> sales_per_day => sales , date sales = revenue -> profit_per_day -> sales_per_product -> profit_per_product
+
+15000 * 3 = 45000 (quantity , selling_price , date)
+
+sales per day select date(sales.created_at) as date, sum(sales.quantity * products.selling_price) as total_sales from sales join products on products.id = sales.pid group by date;
+
+profit per day select date(sales.created_at) as date, sum(sales.quantity *( products.selling_price - products.buying_price)) as total_sales from sales join products on products.id = sales.pid group by date;
+
+sales per product select products.name as p_name , sum(sales.quantity * products.selling_price) as total_sales from products join sales on sales.pid = products.id group by p_name;
+
+profit per product select products.name as p_name , sum(sales.quantity *( products.selling_price - products.buying_price)) as total_sales from products join sales on sales.pid = products.id group by p_name;
+
+Multiline strings ->Enable you to have a string that spans more than one line -> it uses tripple opening & closing brackets
+
+OBJECT ORIENTED PROGRAMMING - OOP -> Broadly we have 2 categories of data types: 1.Inbuilt data types -> data types that come with the programming language -> str, int, float ,bool , lists , tuples... 2.Custom data types -> data types created by the programmer -> this is useful in representing data outside the predefined data types -> This is enabled by OOP (use of classes and objects)
+
+OOP - a programming paradigm where we build programs around classes and objects Class - a template / blueprint for creating objects Object - an instance of a class
+
+Any class has the following 3 things: 1.Identity - every class has a unique name to identify it e.g class Laptop, class Dog 2.State : variables / data / attributes contained in a class =>variables : what does a class have? 3.Behaviour : what can a class do? -> enabled by functions functions inside a class are called methods
+
+class Laptop: identity : Laptop state: ram , processors ,e.t.c behaviour : power on, power off, code, create files
+
+generate identity,state and behaviour for the following classes: 1.Horse 2.Student 3.Car
+
+class Student: identity : Student state: name , student_no , course , age behaviour : learn, sleep, eat, do_exams
+
+class Horse : identity : Horse state : name, age , breed , can_race behaviour: run , race, sleep, eat
+
+Method - any function inside a class Constructor - a special method that is automatically called when creating an object. It is used to initialize objects with data ->def init()
+
+dunder methods - double underscore methods
+
+self - refers to the object being created
+
+Behaviour - what can a class do? -> defined by functions(methods)
+
+TASK 1.Create a class called BankAccount with the attributes: - account number , balance , owner name , date opened
+2.Add some behaviour to the above class using the methods: - deposit() - withdraw() - check_balance() -display_info() -close_account()
+3.Create two BankAccount objects that can deposit , withdraw , check balance display info and close account
+
+def close_account(self,account): del account print(f'account {account} was successfuly deleted')
+
+Inheritance - method overriding Abstraction Encapsulation Polymorphism - method overloading ----------geeksforgeeks----------
+
+Introduction to Flask Internet - global connection between various devices that allows communication between them www - a service that allows you to connect to the internet via the browser server - a device connected to the internet meant to store and share information domain - a user friendly name for an ip address ip address - a number used to uniquely dentify a device on a network -> ipv4 and ipv6 url - the full address used to access a web application e.g https://meet.google.com/dsh-idtb-oqb hosting - uploading your application resources on a server to make it avaiable and visible to everyone
+
+plan -> requirements gathering -> design -> buiding (coding) -> testing -> deployment -> maintenance
+
+framework vs library
+
+192.108.220.220 -> www.google.com
+
+Parts of a URL 1.Protocol - tells the browser how to communicate (http or https) http - hyper text transfer protocol - sends data as raw text https - hyper text transfer protocol secure - data encryption - ssl certificate 2.Domain name 3.Path - specific resource to be accessed in an application 4.Port
+
+Framework vs Library -> The concept of building a house
+
+Scenario 1 ---> Framework David intends to build a house. he recognizes that he isnt a construction expert. he decides to enlist the help of construction professionals (architects , engineers, construction workers). David has to trust the judgement of these professionals. The process becomes much easier but it also becomes less flexible and expensive.
+
+Scenario 2 --Library Mitchelle also trying to build a house. She decides she doesnt need the help of any professionals and does it herself.The process becomes much harder but flexible
+
+framework - a prebuilt structure of code and tools meant to help developers build apps by not having to code everything from scratch -Helps you build apps quicker and better but it has very strict guidelines
+
+Examples 1.Python -> Flask, FastAPI , Django 2.Java -> Spring 3.C# -> .NET 4.JavaScript -> React, Angular, Vue , Svelte 5.Golang -> Chi, Gin 6.NodeJS -> Express 7.Ruby -> Ruby on Rails 8.PHP -> Laravel
+
+FLASK -> A Python framework used to build web applications
+
+Routing in FLASK -> A mechanism that maps / connects URLS to Python functions. It is a system for resource navigation
+
+To execute routing in Flask we use a decorator function called @app.route() decorator function - a function that modifies or determines the behaviour of another function .In Python decorator functions have the '@' prefix @app.route() can take some parameters: 1.Rule / Path -> the specific resource to be accessed e..g /login /register /products 2.Method
+
+@app.route('/') --> decorator function def home(): --> view function return "Hello World" --> resource / data to be returned
+
+Note -> View functions cannot have the same names
+
+app.run() - start your server and run your application
+
+Returning full html pages with Flask -> to return html files we use a function called render_template() imported from flask -> you need the following project structure
+
+Myduka -> static : contains all static files e.g. css , images , videos , favicons -> templates : contains all html files -> a single html file is called a template Template Inheritance -> reduces redundancy in page creation by having one base file with all common features of all pages then subsequently have all other pages inherit from it -> Inheritance is enabled by blocks
+
+{% block title %} defines the unique title of each page {% endblock%}
+
+{% block content %} defines the unique content of each page {% endblock %}
+
+displaying data in flask -> to display data from Python in html we use Jinja: Jinja - is a templating engine integrated with Flask to render dynamic html pages -> It is simply syntax -> How to use Jinja Syntax: 1.When using Jinja to display variables / data ===> {{}} 2.When using control structures ===> {% %}
+
+Control Structures - building blocks of a programming langauge 1.Sequence - a program executes top to bottom left to right 2.Iteration - looping 3.Selection - decision making (conditional statements)
+
+Task -> Display sales and stock data using datatables
+
+Posting data in Flask Posting : move data from the client side to the server side
+
+Posting data workflow 1.A user is provided with a form to fill 2.User fills and submits the form 3.The form is submitted to a route in Flask for processing 4.Form data is then extracted using the request object Note -> data from the form is sent in key-value pair format *request object has 2 methods: => request.form : used to extract form data using its key => request.method : used by the server to determine what method has been used
+
+5.Process data and store it 6.Redirect the user redirect - take the user to another resource -> use the redirect() function which takes url_for() as an argument -> redirect(url_for(' name of the view function' ))
+
+form checklist 1.action attribute -> in what route is the form to be submitted e.g /add_products 2.method attribute method - determines what a server does with data / a resource 3.name attribute -> the key used by the server to extract form data 4.input type 5.button of type submit
+
+methods 1.GET - getting / retrieving data from a server e.g displaying products in an interface 2.POST -> sending data to a server from a client e.g. registering a user ,login , add products, making sales , sending tweets 3.PUT - update an existing resource / data e.g. changing product name , updating password 4.DELETE - getting rid of a resource e.g. deleting products, profile
+
+Note - data from the form is of type string
+
+p_name:"bread" b_price:55 s_price:60
+
+task =>Post stock and sales data using a form and two routes: /add_sales , /add_stock
+
+making purchases => add products -> name,bp,sp => add stock on existing products => making sales => reduce
+
+bread, 60,65 100 80 20 - remaining stock
+
+80
+
+myduka=# select * from stock; id | pid | stock_quantity | created_at
+----+-----+----------------+---------------------------- 1 | 3 | 55| 2026-04-10 15:06:58.088418 1 | 3 | 50| 2026-04-10 15:06:58.088418
+
+total stock = 105
+
+[(105,)]
+
+myduka=# select * from sales; id | pid | quantity | created_at
+----+-----+----------+---------------------------- 3 | 3 | 50 | 2026-04-10 15:06:40.615398 4 | 3 | 20 | 2026-04-13 20:21:39.976895
+
+total sold = 70
+
+remaining = total stock per product - total sold per product
+
+Bread , 60, 65 -> add no stock (none) -> 0 -> make no sales (none) -> 0
+
+Bread , 60, 65 -> add 100 of stock on it (100) -> make no sales (none) - 0
+
+zero and none
+
+zero => 1000 - 1000
+
+flash notifications authentication
+
+Task Have products and stock forms inside modals Test making sales with checking available stock
