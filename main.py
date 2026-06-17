@@ -83,8 +83,14 @@ def login():
        if not registered_user:
           flash("User doesn't exist,please register",'danger')
        else:
+          if bcrypt.check_password_hash(registered_user[-1],password):
+             flash("Login successfully",'success')
+             return redirect(url_for('dashboard'))
+          else:
+             flash("Incorrect password,please try again",'danger')
+             return
           
-        return render_template('login.html')
+    return render_template('login.html')
 
 @app.route('/register',methods=['GET','POST'])
 def register():

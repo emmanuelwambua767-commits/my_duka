@@ -147,12 +147,12 @@ def check_available_stock(pid):
     return total_stock-total_sold
 
 def check_user_exists(email):
-    cur.execute("select * from user where email = %s",(email,))
+    cur.execute("select * from users where email = %s",(email,))
     user=cur.fetchone()
     return user
 
 def create_user(user_details):
-    cur.execute("insert into (full_name,email,phone_number,password)values(%s,%s,%s,%s)",user_details)
+    cur.execute("insert into users(full_name,email,phone_number,password)values(%s,%s,%s,%s)",user_details)
     conn.commit()
 
 # class Horse:
