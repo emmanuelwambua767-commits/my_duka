@@ -1,6 +1,14 @@
-from flask import Flask,render_template,request,redirect,url_for
-from database import get_products,get_sales,get_stocks,check_available_stock,insert_products2,insert_sales,insert_stock
+from flask import Flask,render_template,request,redirect,url_for,flash
+from database import get_products,get_sales,get_stocks,check_available_stock,insert_products2,insert_sales,insert_stock,create_user,check_user_exists
+from flask_bcrypt import Bcrypt
+
+# flask instance
 app=Flask(__name__)
+
+# bcrypt instance with flask app
+bcrypt=Bcrypt(app)
+
+app.secret_key='vghghgfc78656763g'
 
 @app.route('/')
 def home():
@@ -31,7 +39,8 @@ def add_sales():
 @app.route('/products')
 def products():
     products_data =get_products()
-    return render_template('products.html',products_data=products_data)
+    products=get_products
+    return render_template('products.html',products_data=products_data,products=products)
 
 @app.route('/add_products',methods=['GET','POST'])
 def add_products():
@@ -42,7 +51,7 @@ def add_products():
 
     new_product=(product_name,buying_price,selling_price)
     insert_products2(new_product)
-    print('product added successfully')
+    flash('product added successfully',"success")
     return redirect(url_for('products'))
 
 @app.route('/stock')
@@ -64,13 +73,39 @@ def add_stock():
 
 
 
-@app.route('/login')
+@app.route('/login',methods=['GET','POST'])
 def login():
-    return render_template('login.html')
+    if request.method =='POST':
+       email=request.form['email']
+       password=request.form['password']
 
-@app.route('/register')
+       registered_user=check_user_exists(email)
+       if not registered_user:
+          flash("User doesn't exist,please register",'danger')
+       else:
+          
+        return render_template('login.html')
+
+@app.route('/register',methods=['GET','POST'])
 def register():
-    return render_template('register.html')
+     if request.method =='POST':
+      full_name=request.form['full_name']
+      email=request.form['email']
+      phone_number=request.form['phone']
+      password=request.form['password']
+
+      existing_user=check_user_exists(email)
+      if not existing_user:
+        hashed_password=bcrypt.generate_password_hash(password).decode('utf-8')
+        new_user=(full_name,email,phone_number,hashed_password)
+        create_user(new_user)
+        flash("User created successfully",'success')
+        return redirect(url_for('login'))
+      else:
+        flash("User already exists,please login instead",'danger')
+
+     return render_template('register.html')
+
 
 @app.route('/dashboard')
 def dashboard():
