@@ -1,6 +1,7 @@
-from flask import Flask,render_template,request,redirect,url_for,flash
+from flask import Flask,render_template,request,redirect,url_for,flash,session
 from database import get_products,get_sales,get_stocks,check_available_stock,insert_products2,insert_sales,insert_stock,create_user,check_user_exists
 from flask_bcrypt import Bcrypt
+from functools import wraps
 
 # flask instance
 app=Flask(__name__)
@@ -10,12 +11,22 @@ bcrypt=Bcrypt(app)
 
 app.secret_key='vghghgfc78656763g'
 
+
 @app.route('/')
 def home():
     name='This is the home page'
     return render_template('index.html',x=name)
 
+def login_required(f):
+   @wraps(f)
+   def protected (*args,**kwargs):
+      if 'email' not in session:
+         return redirect(url_for('login'))
+      return f(*args,**kwargs)
+   return protected
+
 @app.route('/sales')
+@login_required
 def sales():
     sales_data=get_sales()
     products=get_products()
@@ -37,6 +48,7 @@ def add_sales():
 
 
 @app.route('/products')
+@login_required
 def products():
     products_data =get_products()
     products=get_products
@@ -55,6 +67,7 @@ def add_products():
     return redirect(url_for('products'))
 
 @app.route('/stock')
+@login_required
 def stock():
     stock_data =get_stocks()
     products=get_products()
@@ -84,6 +97,7 @@ def login():
           flash("User doesn't exist,please register",'danger')
        else:
           if bcrypt.check_password_hash(registered_user[-1],password):
+             session['email']=email
              flash("Login successfully",'success')
              return redirect(url_for('dashboard'))
           else:
@@ -114,6 +128,7 @@ def register():
 
 
 @app.route('/dashboard')
+@login_required
 def dashboard():
     return render_template('dashboard.html')
 
