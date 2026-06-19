@@ -31,6 +31,8 @@
     <script src="https://cdn.datatables.net/2.3.8/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.3.8/js/dataTables.bootstrap5.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
     <title>{% block title %} {% endblock %}</title>
 </head>
 
@@ -49,6 +51,7 @@
                         <li class="nav-item">
                             <a class="nav-link active  text-light" aria-current="page" href="/">Home</a>
                         </li>
+                        {% if session.email %}
                         <li class="nav-item">
                             <a class="nav-link active  text-light" href="/products">Products</a>
                         </li>
@@ -62,11 +65,16 @@
                             <a class="nav-link active  text-light" href="/dashboard">Dashboard</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active  text-light" href="/register">Register</a>
+                        <li class="nav-item">
+                            <a class="nav-link active  text-light" href="/logout">Logout</a>
+                        </li>
+                        {% else %}
+                        <a class="nav-link active  text-light" href="/register">Register</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link active  text-light" href="/login">Login</a>
                         </li>
+                        {% endif %}
                 </div>
             </div>
         </nav>

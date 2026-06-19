@@ -193,3 +193,54 @@ zero => 1000 - 1000
 flash notifications authentication
 
 Task Have products and stock forms inside modals Test making sales with checking available stock
+
+Flash messaging -> One time notifications to the user based on some action e.g. action -> adding a product notificatins -> added product successfully
+
+-> we use flash() -> a function that takes two arguments: 1.Message -> specific message to be displayed 2.Message category - categories of messages based on type
+
+Message categories 1.Successful responses /messages -> green 2.Error / danger messages -> red 3.Warning messages -> yellow 4.Informational messages -> blue
+
+Note -> Flash messages are stored in a session cookie (in the browser) -> Any data stored in cookie needs a secret key for encryption
+
+User Registration and Authentication
+
+1.A user is provided with a form to fill / register 2.A user fills the form with user details and submits it 3.Form is submitted to register route for processing 4.Request object extracts form details using request.form method 5.Check whether the user exists - using email if user exists : -> alert them & redirect them to login if user doesnt exist -Hash the user's password for protection -Insert the new user into users table
+
+hashing -> converting data from plain text to a complex format that cant be easily deciphered
+
+1234 ---> n99dnuc99jje99djh99ejd99dd abcde -> 99en8ehdxjjdskkkdkkdkkdkkdkd -> Hashing always produces the same output
+
+rainbow table attacks salting -> add random text to plain passwords so that hashes become more complex
+
+1234 - n99dnuc99jje99djh99ejd99dd 1234xiikdnjicicj -> 99enjucx99djuc8ichjjc89injc99ejjd9idjdjkdoodiodoidji
+
+plain text password + salt => hash it with an encryption algorithm (bcrypt)
+
+pip install flask_bcrypt
+
+Hashing history
+
+id | full_name | email | phone_number | password
+----+-----------+------------------+--------------+-------------------------------------------------------------- 1 | Jane | janedoe@mail.com | 0774981928 | $2b$12$qkfAKQKQvaXYvPMG71b/cOnYvk/p2OPKcPMPcVVuhO.NoAx40vDfG (1 row)
+
+User login 1.User is provided with a form to login with email & password 2.User fills form and submits it to login route 3.Flask extracts login creds using request object 4.Use email to confirm that the user is a registered 5.If user doesnt exist: -> alert them to register instead 6.if user exists: -> confirm that user pasword is correct if password is correct: - user is redirected to login if password is incorrect: -alert user to attempt another password input
+
+1234
+
+(1, 'Jane', 'janedoe@mail.com', '0774981928', '$2b$12$qkfAKQKQvaXYvPMG71b/cOnYvk/p2OPKcPMPcVVuhO.NoAx40vDfG')
+
+1234 != $2b$12$qkfAKQKQvaXYvPMG71b/cOnYvk/p2OPKcPMPcVVuhO.NoAx40vDfG
+
+hashing is a one way function
+
+session -> data used by the server to remember an authenticated user session data will be stored in a cookie and signed using your secret key session stores data in key value pair format
+
+DATA VISUALIZATION -> represent data using visual aids: -> sales and profit per product -> sales and profit per day
+
+Types of visual tools -> bar charts, line charts, pie charts, doughnut chart, frequency polygons, histograms, heatmaps, radar charts, polar area charts
+
+bar charts -> sales and profit per product -> x axis : product names -> y axis : sales and profit data line charts -> sales and profit per day -> x axis : dates -> y axis : sales and profit data
+
+project proposal 1.Idea -> what you want to build 2.Justification -> what problem is your software meant to solve 3.List all database tables to be created 4.Create an ERD of the above tables showing clear relationships
+
+Few concepts to look at 1.Python's virtual environment 2.Revisit OOP concepts - classes , objects, methods 3.Flask SQLalchemy - ORM -> better way to crgeate and manipulate db structures 4.Context Processor 5.Better login with Flask Login 6.Mailing service with flask mail

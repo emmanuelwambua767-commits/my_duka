@@ -121,7 +121,7 @@ def profit_per_day():
 
 def sales_per_product():
     cur.execute("""
-        select products_name as p_name, sum(sales.quantity * products.selling_price) as total_sales from products join sales on products.id = sales.pid
+        select products.name as p_name, sum(sales.quantity * products.selling_price) as total_sales from products join sales on products.id = sales.pid
          group by p_name;
     
     """)
@@ -130,7 +130,7 @@ def sales_per_product():
 
 def profit_per_product():
     cur.execute("""
-        select products_name as p_name, sum(sales.quantity * (products.selling_price-products.buying_price)) as total_sales from sales join products on products.id = sales.pid
+        select products.name as p_name, sum(sales.quantity * (products.selling_price-products.buying_price)) as total_sales from sales join products on products.id = sales.pid
          group by p_name;
     
     """)
@@ -169,3 +169,5 @@ def create_user(user_details):
 # identity:Student
 # state:bright,obedient
 # behaviour:runs,walks,eats,sleeps
+
+
